@@ -1,0 +1,20 @@
+[project]
+name = "persistent-memory-dev"
+version = "0.0.0"
+description = "Development tooling for the persistent-memory Agent Skills bundle"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "ruff>=0.14.10",
+]
+
+[tool.uv]
+package = false
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
+ignore = ["E501"]

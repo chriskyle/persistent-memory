@@ -1,0 +1,49 @@
+# IDE
+.vscode/
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+**/__pycache__/
+
+# Unit test / coverage reports
+.coverage
+.coverage.*
+.cache
+coverage.xml
+.pytest_cache/
+cover/
+
+# Environment
+.venv/
+venv/
+.env
+.env.*
+
+# Codex
+AGENTS.md
+PLANS.md
+**/execplans/
+
+# Local agent memory data used for manual testing
+.agent-memory/
+
+# Random
+.DS_Store
+.ruff_cache/
