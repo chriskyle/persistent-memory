@@ -11,20 +11,25 @@ placeholder `README.md` until that PR merges. See the project `README.md` on the
 feature branch for skill descriptions and usage examples.
 
 ### Toolchain / setup
-- Package manager is **uv** (declared via `[tool.uv]` + `[dependency-groups]` in
-  `pyproject.toml`). It is preinstalled in the VM snapshot at `~/.local/bin/uv`.
-- The startup update script runs `uv sync` (guarded on `pyproject.toml` existing),
-  which creates `.venv` with the dev tooling (`pytest`, `ruff`). No other install
-  steps are needed.
-- If `uv` is not on `PATH` in a shell, invoke it as `~/.local/bin/uv` or run
-  `source ~/.local/bin/env`.
+- Dev tools (`pytest`, `ruff`) are installed on startup into the **system
+  `python3` user site** (`~/.local/lib/python3.*/site-packages`), so they are
+  importable by `/usr/bin/python3` — no virtualenv activation and no per-agent
+  `pip install` needed. They persist in the VM snapshot.
+- The startup update script installs them from the repo's
+  `[dependency-groups].dev` group in `pyproject.toml` (resolved with
+  `uv pip compile`, `uv` is preinstalled at `~/.local/bin/uv`), falling back to a
+  direct `pip install --user pytest "ruff>=0.14.10"` when `pyproject.toml` is
+  absent (e.g. the placeholder `main`).
+- Use `python3 -m ...` to invoke the tools. The `pytest`/`ruff` console scripts
+  land in `~/.local/bin`, which may not be on `PATH`; `python3 -m` avoids that.
 
 ### Lint / test / run
-- Lint: `uv run ruff check .`
-- Tests: `uv run pytest`
-- Run a skill (this repo is **not** an installable package — call scripts directly):
-  `uv run python skills/<skill>/scripts/<script>.py <command> ...`
-  e.g. `uv run python skills/memory-vector/scripts/vector_memory.py recall "..."`
+- Lint: `python3 -m ruff check .`
+- Tests: `python3 -m pytest`
+- Run a skill (this repo is **not** an installable package — the skill scripts are
+  stdlib-only, so call them directly):
+  `python3 skills/<skill>/scripts/<script>.py <command> ...`
+  e.g. `python3 skills/memory-vector/scripts/vector_memory.py recall "..."`
 
 ### Non-obvious gotchas
 - Skills read/write durable data under `~/.agent-memory` by default. Set
