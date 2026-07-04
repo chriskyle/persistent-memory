@@ -167,6 +167,7 @@ def build_parser() -> argparse.ArgumentParser:
     start_parser.add_argument("task", help="Current task description or question.")
     start_parser.add_argument("--top-k", type=int, default=8)
     start_parser.add_argument("--min-score", type=float, default=0.2)
+    start_parser.add_argument("--json", action="store_true")
     start_parser.set_defaults(func=cmd_start)
 
     end_parser = subparsers.add_parser("end", help="Remember durable findings and push them to cloud storage.")
@@ -174,6 +175,7 @@ def build_parser() -> argparse.ArgumentParser:
     end_parser.add_argument("--tags", help="Comma-separated tags for stored memories.")
     end_parser.add_argument("--importance", type=int, default=3)
     end_parser.add_argument("--source", default="memory-checkpoint")
+    end_parser.add_argument("--json", action="store_true")
     end_parser.set_defaults(func=cmd_end)
     return parser
 

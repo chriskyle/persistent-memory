@@ -53,6 +53,7 @@ class Backend(abc.ABC):
         override this. Backends that write through immediately (localdir,
         s3, rclone) can leave this as a no-op.
         """
+        return None
 
     def describe(self) -> dict[str, str]:
         """Human-readable backend identity, used by the `status` command."""

@@ -22,14 +22,17 @@ import subprocess
 import sys
 import time
 import uuid
-from collections import defaultdict
 from collections.abc import Iterable, Mapping
 from pathlib import Path
 from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from embeddings.base import EmbeddingError, EmbeddingProvider, EmbeddingResult  # noqa: E402
+from embeddings.base import (  # noqa: E402
+    EmbeddingError,
+    EmbeddingProvider,
+    EmbeddingResult,
+)
 from embeddings.hashing import HashingEmbeddingProvider, tokenize  # noqa: E402
 from embeddings.openai_provider import OpenAIEmbeddingProvider  # noqa: E402
 
@@ -514,7 +517,7 @@ def remember(
 
     device_id = get_or_create_device_id(paths)
     seq = next_seq(paths)
-    memory_id = "mem_" + hashlib.sha256(f"{device_id}:{seq}:{time.time_ns()}:{content_hash}".encode("utf-8")).hexdigest()[:20]
+    memory_id = "mem_" + hashlib.sha256(f"{device_id}:{seq}:{time.time_ns()}:{content_hash}".encode()).hexdigest()[:20]
     timestamp = _now_iso()
     record = {
         "event": "memory",

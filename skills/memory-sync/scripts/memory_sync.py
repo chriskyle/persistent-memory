@@ -35,8 +35,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from backends.base import Backend, BackendError  # noqa: E402
 from backends.dropbox_backend import DropboxBackend  # noqa: E402
-from backends.git_backend import GitBackend  # noqa: E402
 from backends.gdrive_backend import GoogleDriveBackend  # noqa: E402
+from backends.git_backend import GitBackend  # noqa: E402
 from backends.localdir import LocalDirBackend  # noqa: E402
 from backends.rclone_backend import RcloneBackend  # noqa: E402
 from backends.s3_backend import S3Backend  # noqa: E402
@@ -467,9 +467,12 @@ def _run_sync(
         decision = classify(l_hash, r_hash, m_hash)
 
         if decision.action == Action.NOOP:
-            if l_hash is not None and manifest_entries.get(relpath, {}).get("hash") != l_hash:
-                if not dry_run:
-                    manifest_entries[relpath] = local[relpath]
+            if (
+                l_hash is not None
+                and manifest_entries.get(relpath, {}).get("hash") != l_hash
+                and not dry_run
+            ):
+                manifest_entries[relpath] = local[relpath]
             continue
 
         if decision.action == Action.CONFLICT:
